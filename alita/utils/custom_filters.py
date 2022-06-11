@@ -1,3 +1,19 @@
+# Copyright (C) 2020 - 2021 Divkix. All rights reserved. Source code available under the AGPL.
+#
+# This file is part of Alita_Robot.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from re import compile as compile_re
 from re import escape
 from shlex import split
@@ -8,7 +24,7 @@ from pyrogram.filters import create
 from pyrogram.types import CallbackQuery, Message
 
 from alita import DEV_USERS, OWNER_ID, SUDO_USERS
-from alita.database.disable_db import Disabling
+from alita.database.disable_db import DISABLED_CMDS
 from alita.tr_engine import tlang
 from alita.utils.caching import ADMIN_CACHE, admin_cache_reload
 from alita.vars import Config
@@ -25,16 +41,8 @@ def command(
     sudo_cmd: bool = False,
 ):
     async def func(flt, _, m: Message):
-        if not m:
-            return
 
-        if m["edit_date"]:
-            return # reaction
-
-        if m["chat"] and m["chat"]["type"] == "channel":
-            return
-
-        if not m.from_user:
+        if m and not m.from_user:
             return False
 
         if m.from_user.is_bot:
@@ -62,11 +70,18 @@ def command(
             prefix="|".join(escape(x) for x in Config.PREFIX_HANDLER),
             bot_name=Config.BOT_USERNAME,
         )
-        if matches := compile_re(regex).search(text):
+        matches = compile_re(regex).search(text)
+        if matches:
             m.command = [matches.group(1)]
             if matches.group(1) not in flt.commands:
                 return False
             if m.chat.type == "supergroup":
+                try:
+                    disable_list = DISABLED_CMDS[m.chat.id].get("commands", [])
+                    status = str(DISABLED_CMDS[m.chat.id].get("action", "none"))
+                except KeyError:
+                    disable_list = []
+                    status = "none"
                 try:
                     user_status = (await m.chat.get_member(m.from_user.id)).status
                 except UserNotParticipant:
@@ -75,21 +90,21 @@ def command(
                 except ValueError:
                     # i.e. PM
                     user_status = "creator"
-                ddb = Disabling(m["chat"]["id"])
-                if str(matches.group(1)) in ddb.get_disabled() and user_status not in (
+                if str(matches.group(1)) in disable_list and user_status not in (
                     "creator",
                     "administrator",
                 ):
-                    if ddb.get_action() == "del":
-                        try:
+                    try:
+                        if status == "del":
                             await m.delete()
-                        except RPCError:
-                            pass
-                    return
+                    except RPCError:
+                        pass
+                    return False
             if matches.group(3) == "":
                 return True
             try:
-                m.command.extend(iter(split(matches.group(3))))
+                for arg in split(matches.group(3)):
+                    m.command.append(arg)
             except ValueError:
                 pass
             return True
