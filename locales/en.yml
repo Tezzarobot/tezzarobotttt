@@ -516,7 +516,7 @@ strings:
     check_help: "Please check help on how to use this this command."
     close_btn: Close
     commands_available: |-
-      Hey There! My name is Alita.
+      Hey There! My name is Tezza.
       I'm here to help you manage your groups!
       Commands available:
        × /start: Start the bot
@@ -603,9 +603,9 @@ strings:
   start:
     add_chat_btn: "Add me to a chat!"
     commands_btn: Commands & Help
-    group: "I'm alive :3"
+    group: "ʏᴇs! ɪ'ᴍ ᴀʟɪᴠᴇ 😌"
     info_page: |-
-      • @Alita_Robot
+      • @Tezza_Robot
 
       <b>Version:</b> <i>{version}</i>
 
@@ -615,11 +615,21 @@ strings:
     language_btn: Language
     pm_for_help: "Contact me in PM to get the list of possible commands."
     private: |-
-      Hey there! My name is Alita ✨.
-      I'm here to help you manage your groups!
-      Hit /help to find out more about how to use me in my full potential!
-
-      Join my [News Channel](http://t.me/AlitaRobotUpdates) to get information on all the latest updates.
+*Hello {} !*
+────「 Tezza Robot 」────
+*Hᴇʟʟᴏ ɪ'ᴍ ᴛᴇᴢᴢᴀ*   
+✪ I'ᴍ ᴘᴏᴡᴇʀғᴜʟ Gʀᴏᴜᴘ Mᴀɴᴀɢᴇᴍᴇɴᴛ Bᴏᴛ [🔥](https://telegra.ph/file/a8cc05eb6490cf23a57aa.jpg)
+✪ I'ᴍ Vᴇʀʏ Fᴀꜱᴛ Aɴᴅ Mᴏʀᴇ Eꜰꜰɪᴄɪᴇɴᴛ I Pʀᴏᴠɪᴅᴇ Aᴡᴇꜱᴏᴍᴇ Fᴇᴀᴛᴜʀᴇꜱ!
+─────────────────────
+I have lots of handy features such as:
+‣ Warning system
+‣ Artificial intelligence
+‣ Flood control system
+‣ Note keeping system
+‣ Filters keeping system
+‣ Approvals and much more.
+───────────────────────
+➛ᴛʀʏ ᴛʜᴇ ʜᴇʟᴘ ʙᴜᴛᴛᴏɴs ʙᴇʟᴏᴡ ᴛᴏ ᴋɴᴏᴡ ᴍʏ ᴀʙɪʟɪᴛɪᴇs
     public_help: "Press the button below to get help for <i>{help_option}</i>"
     source_code: "Source Code"
   utils:
